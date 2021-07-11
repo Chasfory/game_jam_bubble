@@ -77,6 +77,28 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="win" width="200">
+      <v-card>
+          <h1>BRAVO !</h1>
+          <img :src="bub_3" @click="refresh" height="200px" width="200px"/>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="white" @click="refresh">restart</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="lose" width="200">
+      <v-card>
+          <h1>OH NON !</h1>
+          <img :src="bub_3" @click="refresh" height="200px" width="200px"/>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="white" @click="refresh">restart</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -143,7 +165,9 @@ export default {
     this.nbFarm_1= 0,
     this.nbFarm_2 = 0,
     this.nbFarm_3 = 0,
-    this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2)
+    this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2),
+    this.win = false,
+    this.lose = false
   },
   methods: {
     add_bubble_game () {
@@ -153,6 +177,7 @@ export default {
       this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       console.log(this.nbBubbles);
       this.$forceUpdate();
+      this.game_over();
     },
     removeBubble () {
       if (this.nbBubbles <= 0)
@@ -162,9 +187,8 @@ export default {
       this.life = ((this.damage / 1000) * 100);
       this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       console.log(this.nbBubbles);
-      if (this.nbBubbles <= 0)
-        this.game_over();
       this.$forceUpdate();
+      this.game_over();
     },
     addFarm_1 () {
       if (this.nbBubbles < (this.nbFarm_1 + 30))
@@ -175,6 +199,7 @@ export default {
       this.life = ((this.damage / 1000) * 100);
       this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
+      this.game_over();
     },
     addFarm_2 () {
       if (this.nbBubbles < (this.nbFarm_2 + 60))
@@ -185,6 +210,7 @@ export default {
       this.life = ((this.damage / 1000) * 100);
       this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
+      this.game_over();
     },
     addFarm_3 () {
       if (this.nbBubbles < (this.nbFarm_3 + 100))
@@ -195,10 +221,22 @@ export default {
       this.life = ((this.damage / 1000) * 100);
       this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
+      this.game_over();
     },
     game_over () {
-      console.log("dead");
-    }
+      console.log("life = " + this.life + "life_bubble = " + this.life_bubble);
+      if (this.life <= 0) {
+        console.log("win");
+        this.win = true;
+      }
+      if (this.life_bubble <= 0.5) {
+        console.log("dead");
+        this.lose = true;
+      }
+    },
+    refresh () {
+      location.reload();
+    },
   }
 };
 </script>
