@@ -1,15 +1,55 @@
 <template>
   <v-app>
-    <p justify="start" align="start">Number of bubbles = {{ this.nbBubbles }}</p>
-    <p justify="start" align="start">Number of farm 1 = {{ this.nbFarm_1 }}</p>
-    <p justify="start" align="start">Number of farm 2= {{ this.nbFarm_2 }}</p>
-    <p justify="start" align="start">Number of farm 3= {{ this.nbFarm_3 }}</p>
+    <v-card class="py-5 px-5" elevation="10" outlined>
+      <v-row>
+        Number of bubbles = {{ this.nbBubbles }}
+        <v-spacer></v-spacer>
+        damage of boss = {{ this.nbboss }}
+        <v-spacer></v-spacer>
+        Number of farm 1 = {{ this.nbFarm_1 }}
+        <v-spacer></v-spacer>
+        Number of farm 2= {{ this.nbFarm_2 }}
+        <v-spacer></v-spacer>
+        Number of farm 3= {{ this.nbFarm_3 }}
+      </v-row>
+    </v-card>
     <v-row justify="center">
-      <v-btn color="green" @click="addFarm_1">Buy farmlevel_1</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn color="green" @click="addFarm_2">Buy farmlevel_2</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn color="green" @click="addFarm_3">Buy farmlevel_3</v-btn>
+      <v-col>
+        <v-card class="py-5 px-5" elevation="0" outlined>
+          <v-row>
+            <v-col>
+              <v-btn class="ma-12" color="green" @click="addFarm_1">Buy farmlevel_1</v-btn>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col>
+              <v-btn class="ma-12" color="green" @click="addFarm_2">Buy farmlevel_2</v-btn>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col>
+              <v-btn class="ma-12" color="green" @click="addFarm_3">Buy farmlevel_3</v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row align="start">
+      <v-col>
+        <v-card class="px-5" elevation="0" outlined>
+          <v-row>
+            <v-col>
+              <img :src="lev_1" height="100px" width="100px">
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col>
+              <img :src="lev_2" height="100px" width="100px">
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col>
+              <img :src="lev_3" height="100px" width="100px">
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
     </v-row>
     <v-row justify="start" align="center">
         <img :src="bub_1" @click="add_bubble_game" height="100px" width="100px">
@@ -54,6 +94,8 @@ export default {
     on_son: play_son
   }),
   mounted () {
+    if (this.nbBubbles <= 0)
+      this.game_over();
     setInterval(() => {
       this.nbBubbles += this.nbFarm_1;
       if (this.nbFarm_2 != 0)
@@ -62,16 +104,22 @@ export default {
         this.nbBubbles += this.nbFarm_3 + 3;
       this.$forceUpdate();
     }, 1000)
+    setInterval(() => {
+      this.nbBubbles -= this.nbboss;
+      this.$forceUpdate();
+    }, 10000)
   },
   created () {
-    this.nbBubbles = 0,
+    this.nbBubbles = 100,
     this.nbFarm_1= 0,
     this.nbFarm_2 = 0,
-    this.nbFarm_3 = 0
+    this.nbFarm_3 = 0,
+    this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2)
   },
   methods: {
     add_bubble_game () {
       this.nbBubbles += 1;
+      this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
       console.log(this.nbBubbles);
       this.$forceUpdate();
     },
@@ -80,6 +128,8 @@ export default {
         return;
       this.nbBubbles -= 1;
       console.log(this.nbBubbles);
+      if (this.nbBubbles <= 0)
+        this.game_over();
       this.$forceUpdate();
     },
     addFarm_1 () {
@@ -87,6 +137,7 @@ export default {
         return;
       this.nbBubbles -= (this.nbFarm_1 + 30);
       this.nbFarm_1 += 1;
+      this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
       this.$forceUpdate();
     },
     addFarm_2 () {
@@ -94,6 +145,7 @@ export default {
         return;
       this.nbBubbles -= (this.nbFarm_2 + 60);
       this.nbFarm_2 += 1;
+      this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
       this.$forceUpdate();
     },
     addFarm_3 () {
@@ -101,7 +153,11 @@ export default {
         return;
       this.nbBubbles -= (this.nbFarm_3 + 100);
       this.nbFarm_3 += 1;
+      this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
       this.$forceUpdate();
+    },
+    game_over () {
+      console.log("dead");
     }
   }
 };
