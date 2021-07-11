@@ -229,7 +229,7 @@ export default {
         console.log("win");
         this.win = true;
       }
-      if (this.life_bubble <= 0.5) {
+      if (this.life_bubble <= 0) {
         console.log("dead");
         this.lose = true;
       }
