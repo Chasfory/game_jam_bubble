@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-card class="py-5 px-5" elevation="10" outlined>
+  <v-app :style="{ backgroundColor:'#aa98b8' }">
+    <v-card color="red" class="py-5 px-5" elevation="10" outlined>
       <v-row>
         Number of bubbles = {{ this.nbBubbles }}
         <v-spacer></v-spacer>
@@ -15,20 +15,20 @@
     </v-card>
     <v-row justify="center">
       <v-col>
-        <v-card class="py-5 px-5" elevation="0" outlined>
+        <v-card color="#dcadff" class="py-5 px-5" elevation="0" outlined>
           <v-row>
             <v-col>
-              <v-btn class="ma-12" color="green" @click="addFarm_1">Buy farmlevel_1</v-btn>
+              <v-btn class="ma-12" @click="addFarm_1">Buy farmlevel_1</v-btn>
             </v-col>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-col>
-              <v-btn class="ma-12" color="green" @click="addFarm_2">Buy farmlevel_2</v-btn>
+              <v-btn class="ma-12" @click="addFarm_2">Buy farmlevel_2</v-btn>
             </v-col>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-col>
-              <v-btn class="ma-12" color="green" @click="addFarm_3">Buy farmlevel_3</v-btn>
+              <v-btn class="ma-12" @click="addFarm_3">Buy farmlevel_3</v-btn>
             </v-col>
           </v-row>
         </v-card>
@@ -36,7 +36,7 @@
     </v-row>
     <v-row align="start">
       <v-col>
-        <v-card class="px-5" elevation="0" outlined>
+        <v-card color="#dcadff" class="px-5" elevation="0" outlined>
           <v-row>
             <v-col>
               <img :src="lev_1" height="200px" width="200px">
@@ -57,7 +57,7 @@
     </v-row>
     <v-row align="start">
       <v-col>
-        <v-card class="px-5" elevation="0" outlined>
+        <v-card color="#dcadff" class="px-5" elevation="0" outlined>
           <v-row>
             <v-col>
               <v-progress-linear height="20px" :value="life_bubble"></v-progress-linear>
