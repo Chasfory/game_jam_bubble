@@ -21,9 +21,11 @@
               <v-btn class="ma-12" color="green" @click="addFarm_1">Buy farmlevel_1</v-btn>
             </v-col>
             <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
             <v-col>
               <v-btn class="ma-12" color="green" @click="addFarm_2">Buy farmlevel_2</v-btn>
             </v-col>
+            <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-col>
               <v-btn class="ma-12" color="green" @click="addFarm_3">Buy farmlevel_3</v-btn>
@@ -37,24 +39,43 @@
         <v-card class="px-5" elevation="0" outlined>
           <v-row>
             <v-col>
-              <img :src="lev_1" height="100px" width="100px">
+              <img :src="lev_1" height="200px" width="200px">
             </v-col>
             <v-spacer></v-spacer>
-            <v-col>
-              <img :src="lev_2" height="100px" width="100px">
-            </v-col>
             <v-spacer></v-spacer>
             <v-col>
-              <img :src="lev_3" height="100px" width="100px">
+              <img :src="lev_2" height="200px" width="200px">
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-col>
+              <img :src="lev_3" height="200px" width="200px">
             </v-col>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-    <v-row justify="start" align="center">
-        <img :src="bub_1" @click="add_bubble_game" height="100px" width="100px">
-        <v-spacer></v-spacer>
-        <img :src="bos_1" @click="removeBubble" height="200px" width="150px">
+    <v-row align="start">
+      <v-col>
+        <v-card class="px-5" elevation="0" outlined>
+          <v-row>
+            <v-col>
+              <v-progress-linear height="20px" :value="life_bubble"></v-progress-linear>
+              <img :src="bub_1" @click="add_bubble_game" height="300px" width="300px">
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-col>
+              <v-progress-linear height="20px" :value="life"></v-progress-linear>
+              <img :src="bos_1" @click="removeBubble" height="300px" width="300px">
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
     </v-row>
   </v-app>
 </template>
@@ -102,15 +123,23 @@ export default {
         this.nbBubbles += this.nbFarm_2 + 2;
       if (this.nbFarm_3 != 0)
         this.nbBubbles += this.nbFarm_3 + 3;
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
     }, 1000)
     setInterval(() => {
       this.nbBubbles -= this.nbboss;
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
     }, 10000)
   },
   created () {
     this.nbBubbles = 100,
+    this.damage_bubble = 1000,
+    this.damage = 1000,
+    this.life = ((this.damage / 1000) * 100),
+    this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100),
     this.nbFarm_1= 0,
     this.nbFarm_2 = 0,
     this.nbFarm_3 = 0,
@@ -120,6 +149,8 @@ export default {
     add_bubble_game () {
       this.nbBubbles += 1;
       this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       console.log(this.nbBubbles);
       this.$forceUpdate();
     },
@@ -127,6 +158,9 @@ export default {
       if (this.nbBubbles <= 0)
         return;
       this.nbBubbles -= 1;
+      this.damage -= 1;
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       console.log(this.nbBubbles);
       if (this.nbBubbles <= 0)
         this.game_over();
@@ -138,6 +172,8 @@ export default {
       this.nbBubbles -= (this.nbFarm_1 + 30);
       this.nbFarm_1 += 1;
       this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
     },
     addFarm_2 () {
@@ -146,6 +182,8 @@ export default {
       this.nbBubbles -= (this.nbFarm_2 + 60);
       this.nbFarm_2 += 1;
       this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
     },
     addFarm_3 () {
@@ -154,6 +192,8 @@ export default {
       this.nbBubbles -= (this.nbFarm_3 + 100);
       this.nbFarm_3 += 1;
       this.nbboss = this.nbFarm_1 + (this.nbFarm_2 + 1) + (this.nbFarm_3 + 2);
+      this.life = ((this.damage / 1000) * 100);
+      this.life_bubble = ((this.nbBubbles / this.damage_bubble) * 100);
       this.$forceUpdate();
     },
     game_over () {
